@@ -1,48 +1,5 @@
----
-subtitle: |
-    []{#_f0ijjim6efqq .anchor}Properly dealing with Executors before
-    Upgrade: DC/OS 1.7.4-\>1.8.8
-title: |
-    []{#_qf425u1yl0vb
-    .anchor}![Mesosphere-Logo-Horizontal.png](media/image1.png){width="6.5in"
-    height="0.875in"}
-
-    []{#_4a9g28dugilb .anchor}Inside an Executor
----
-
-*Mesosphere: JIRA COPS-618*
-
-*October 27, 2017*
-
 [*[ajohnson\@mesosphere.io]{.underline}*](mailto:ajohnson@mesosphere.io)
 
-**[Executor Introduction - Overview](#executor-introduction---overview)
-3**
-
-**[Motivation of Performing "Executor
-Shutdown"](#motivation-of-performing-executor-shutdown) 4**
-
-**[Procedure for Executor Shutdown](#procedure-for-executor-shutdown)
-4**
-
-**[Scripts for this Procedure](#scripts-for-this-procedure) 6**
-
-> [Upgradepublicmesos\_fix\_1023.sh](#upgradepublicmesos_fix_1023.sh) 6
->
-> [Shutdown\_Executor\_Sockets](#shutdown_executor_sockets) 8
->
-> [shutdown\_executor\_sockets.sh](#shutdown_executor_sockets.sh) 9
-
-**[Relevant Log Data](#relevant-log-data) 10**
-
-> [Test Run](#_p5pntige878n) 13
-
-**[Conclusion](#conclusion) 16**
-
-Executor and Escorts...
-
-![](media/image4.png){width="5.286458880139983in"
-height="2.3467125984251966in"}
 
 Executor Introduction - Overview 
 =================================
