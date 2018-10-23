@@ -1,0 +1,14 @@
+# needed info
+# ami
+# instance type
+# ssh keypair
+# EBS volume info (size, IOPS, ...) --> depends on
+
+
+aws_region = "us-west-2"
+aws_instance_type = "i3.metal"
+aws_ami = "ami-040a0c972599d751d"
+
+# space for 1 bootstrap node, 1 master, 5 agent nodes (with recommended disk sizes)
+ebs_volume_size_in_gb=1000
+ebs_optimized_iops=true

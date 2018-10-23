@@ -1,0 +1,16 @@
+external_gateway="b44c19ef-c6ca-4129-bbb2-1c94f9fe28f9"
+pool="public"
+
+# disk storage in GB: 1xmaster (120GB, dcos.master) + 1xbootstrap,1xpublic,4xprivate(6x60GB,dcos.agent) = 480GB
+
+# https://docs.mesosphere.com/services/kubernetes/1.2.2-1.10.7/install/#prerequisites/
+# i3.metal + 1TB EBS GP2 (1TB Openstack loop device)
+# RAM (VMs): HostOS, 3x64GB + 9x32GB = 480GB (best no overcommit) - also buffer for host OS
+# disk: 100OS + 3*120(master) + 9*60 = 1000GB (1xbootstrap, 2xpublic, 6xprivate)
+# CPU (hyperthreads): 3*8 + 9*4 = 60 vCPUs (12 vCPUs left for HostOS and Openstack)
+# --> dcos.master instance type: 8vCPUs, 64GB RAM, 120GB disk
+# --> dcos.agent (also used by bootstrap): 4vCPUs, 32GB RAM, 60GB disk
+# --> dcos.bootstrap: 2 vCPUs, 4GB RAM, 20GB disk
+num_of_masters=3
+num_of_private_agents=6
+num_of_public_agents=2
