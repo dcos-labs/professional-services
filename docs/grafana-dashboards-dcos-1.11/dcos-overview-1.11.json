@@ -752,11 +752,11 @@
     {
       "cacheTimeout": null,
       "colorBackground": false,
-      "colorValue": false,
+      "colorValue": true,
       "colors": [
-        "#3f6833",
+        "#58140c",
         "#c15c17",
-        "#58140c"
+        "#3f6833"
       ],
       "datasource": "${DS_PROMETHEUS}",
       "format": "dthms",
@@ -816,7 +816,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": "",
+      "thresholds": "0,300",
       "title": "Master Uptime",
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -1512,7 +1512,7 @@
           "format": "percent",
           "label": null,
           "logBase": 1,
-          "max": "100",
+          "max": "800",
           "min": "0",
           "show": true
         },
@@ -2609,5 +2609,5 @@
   "timezone": "",
   "title": "DC/OS (1.11)",
   "uid": "hwptcExiz",
-  "version": 3
+  "version": 7
 }

@@ -122,6 +122,8 @@ cp ./mesos_exporter-*/mesos_exporter /usr/bin/
 cat <<EOF | sudo tee /etc/systemd/system/mesos-exporter.service
 [Unit]
 Description=DC/OS Mesos Exporter service
+Wants=dcos.target
+After=dcos.target
 
 [Service]
 Restart=always
@@ -157,7 +159,7 @@ sudo systemctl restart mesos-exporter
 * prometheus config
 
 [mesosphere-performance]: https://docs.mesosphere.com/1.11/monitoring/performance-monitoring/
-[mesosphere-container]: https://docs.mesosphere.com/1.11/metrics/reference/#container)
+[mesosphere-container]: https://docs.mesosphere.com/1.11/metrics/reference/#container
 [mesos-monitoring]: http://mesos.apache.org/documentation/latest/monitoring/
 [marathon-monitoring]: https://mesosphere.github.io/marathon/docs/metrics.html
 [mesos-exporter]: https://github.com/mesos/mesos_exporter
