@@ -1,4 +1,52 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "dashlist",
+      "name": "Dashboard list",
+      "version": "5.0.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "5.4.3"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": "5.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": "5.0.0"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -16,7 +64,7 @@
   "editable": true,
   "gnetId": 9000,
   "graphTooltip": 0,
-  "id": 3,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -62,7 +110,7 @@
         "#3f6833",
         "#967302"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "decimals": 0,
       "format": "short",
       "gauge": {
@@ -115,7 +163,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_cpus{type=\"used\"}",
+          "expr": "max (mesos_master_cpus{type=\"used\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -145,7 +193,7 @@
         "#3f6833",
         "#967302"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "decimals": 0,
       "format": "mbytes",
       "gauge": {
@@ -198,7 +246,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_mem{type=\"used\"}",
+          "expr": "max (mesos_master_mem{type=\"used\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -228,7 +276,7 @@
         "#3f6833",
         "#967302"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "decimals": 0,
       "format": "mbytes",
       "gauge": {
@@ -281,7 +329,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_disk{type=\"used\"}",
+          "expr": "max (mesos_master_disk{type=\"used\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -289,7 +337,7 @@
         }
       ],
       "thresholds": "0,.75",
-      "title": "CPU Allocation",
+      "title": "Disk Allocation",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -308,7 +356,7 @@
           {
             "evaluator": {
               "params": [
-                0.8
+                0.75
               ],
               "type": "gt"
             },
@@ -330,6 +378,7 @@
           }
         ],
         "executionErrorState": "alerting",
+        "for": "0m",
         "frequency": "60s",
         "handler": 1,
         "name": "CPU Allocation alert",
@@ -340,7 +389,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fill": 1,
       "gridPos": {
@@ -373,11 +422,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "1 - sum by (instance) (mesos_master_cpus{type=\"free\"}) / sum by (instance) (mesos_master_cpus)",
+          "expr": "max (mesos_master_cpus{type=\"percent\"})",
           "format": "time_series",
-          "hide": false,
           "intervalFactor": 1,
-          "legendFormat": "",
           "refId": "A"
         }
       ],
@@ -387,7 +434,7 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 0.8
+          "value": 0.75
         }
       ],
       "timeFrom": null,
@@ -437,7 +484,7 @@
           {
             "evaluator": {
               "params": [
-                0.5
+                0.75
               ],
               "type": "gt"
             },
@@ -459,6 +506,7 @@
           }
         ],
         "executionErrorState": "alerting",
+        "for": "0m",
         "frequency": "60s",
         "handler": 1,
         "name": "Memory Allocation alert",
@@ -469,11 +517,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "description": "",
       "fill": 1,
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 8,
         "x": 8,
         "y": 11
@@ -502,7 +550,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "1 - sum by (instance) (mesos_master_mem{type=\"free\"}) / sum by (instance) (mesos_master_mem)",
+          "expr": "max (mesos_master_mem{type=\"percent\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -515,7 +563,7 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 0.5
+          "value": 0.75
         }
       ],
       "timeFrom": null,
@@ -566,7 +614,7 @@
           {
             "evaluator": {
               "params": [
-                0.8
+                0.75
               ],
               "type": "gt"
             },
@@ -588,6 +636,7 @@
           }
         ],
         "executionErrorState": "alerting",
+        "for": "0m",
         "frequency": "60s",
         "handler": 1,
         "name": "Storage Allocation alert",
@@ -598,10 +647,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 8,
         "x": 16,
         "y": 11
@@ -630,7 +679,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "1 - sum by (instance) (mesos_master_disk{type=\"free\"}) / sum by (instance) (mesos_master_disk)",
+          "expr": "max (mesos_master_disk{type=\"percent\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -642,7 +691,7 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 0.8
+          "value": 0.75
         }
       ],
       "timeFrom": null,
@@ -693,11 +742,11 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 17
       },
-      "id": 12,
+      "id": 61,
       "panels": [],
-      "title": "Mesos Agents Utilization",
+      "title": "Mesos Master State",
       "type": "row"
     },
     {
@@ -709,7 +758,421 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
+      "format": "dthms",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 18
+      },
+      "id": 62,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "min (mesos_master_uptime_seconds)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "title": "Master Uptime",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "columns": [],
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 6,
+        "w": 18,
+        "x": 6,
+        "y": 18
+      },
+      "id": 67,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 2,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Type",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "text": "Leader",
+              "value": "1"
+            },
+            {
+              "text": "Follower",
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "alias": "Uptime",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #B",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dthms"
+        },
+        {
+          "alias": "Log Recovered",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #C",
+          "thresholds": [
+            "0",
+            "1"
+          ],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "text": "true",
+              "value": "1"
+            },
+            {
+              "text": "false",
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "alias": "Ensemble Size",
+          "colorMode": "value",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #D",
+          "thresholds": [
+            "3",
+            "5"
+          ],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "max by (instance) (mesos_master_elected)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "legendFormat": "Elected",
+          "refId": "A"
+        },
+        {
+          "expr": "max by (instance) (mesos_master_uptime_seconds)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "B"
+        },
+        {
+          "expr": "max by (instance) (mesos_registrar_log_recovered)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "C"
+        },
+        {
+          "expr": "max by (instance) (mesos_registrar_log_ensemble_size)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "D"
+        }
+      ],
+      "title": "Masters Overview",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "#58140c",
+        "#c15c17",
+        "#3f6833"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 21
+      },
+      "id": 63,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "max (mesos_master_elected)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "0,1",
+      "title": "Master Elected",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        },
+        {
+          "op": "=",
+          "text": "no",
+          "value": "0"
+        },
+        {
+          "op": "=",
+          "text": "yes",
+          "value": "1"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#58140c",
+        "#c15c17",
+        "#3f6833"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 3,
+        "y": 21
+      },
+      "id": 65,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "round (min (mesos_registrar_log_ensemble_size) / 2, 1)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "1,5",
+      "title": "Quorum",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 12,
+      "panels": [],
+      "title": "Mesos Utilization",
+      "type": "row"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#3f6833",
+        "#c15c17",
+        "#58140c"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -722,7 +1185,7 @@
         "h": 3,
         "w": 8,
         "x": 0,
-        "y": 19
+        "y": 25
       },
       "id": 49,
       "interval": null,
@@ -761,7 +1224,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_slaves_state{state=\"active\"}",
+          "expr": "max (mesos_master_slaves_state{state=\"connected_active\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -789,7 +1252,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -802,7 +1265,7 @@
         "h": 3,
         "w": 8,
         "x": 8,
-        "y": 19
+        "y": 25
       },
       "id": 28,
       "interval": null,
@@ -841,7 +1304,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_slaves_state{state=\"inactive\"}",
+          "expr": "max (mesos_master_slaves_state{state=\"connected_inactive\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -869,7 +1332,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -882,7 +1345,7 @@
         "h": 3,
         "w": 8,
         "x": 16,
-        "y": 19
+        "y": 25
       },
       "id": 26,
       "interval": null,
@@ -921,7 +1384,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_slaves_state{state=\"disconnected\"}",
+          "expr": "max (mesos_master_slaves_state{state=\"disconnected_inactive\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -978,13 +1441,13 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "gridPos": {
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 22
+        "y": 28
       },
       "id": 42,
       "legend": {
@@ -1010,11 +1473,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max by(instance)(cpus_user_time + cpus_system_time)",
-          "format": "heatmap",
+          "expr": "load_1min * 100",
+          "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{hostname}}",
           "refId": "A"
         }
       ],
@@ -1073,7 +1536,7 @@
           {
             "evaluator": {
               "params": [
-                12000000000
+                24000000000
               ],
               "type": "gt"
             },
@@ -1106,13 +1569,13 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "gridPos": {
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 22
+        "y": 28
       },
       "id": 44,
       "legend": {
@@ -1138,11 +1601,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max by(instance)(memory_total - memory_free)",
-          "format": "heatmap",
+          "expr": "max by (hostname)(memory_total - memory_free)",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{hostname}}",
           "refId": "A"
         }
       ],
@@ -1152,7 +1615,7 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 12000000000
+          "value": 24000000000
         }
       ],
       "timeFrom": null,
@@ -1177,7 +1640,7 @@
           "format": "decbytes",
           "label": null,
           "logBase": 1,
-          "max": "16000000000",
+          "max": "32000000000",
           "min": "0",
           "show": true
         },
@@ -1200,13 +1663,13 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "fill": 1,
       "gridPos": {
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 22
+        "y": 28
       },
       "id": 59,
       "legend": {
@@ -1232,10 +1695,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max by(instance)(disk_used)",
+          "expr": "sum by(hostname)(filesystem_capacity_used)",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{hostname}}",
           "refId": "A"
         }
       ],
@@ -1262,7 +1725,7 @@
           "format": "decbytes",
           "label": null,
           "logBase": 1,
-          "max": null,
+          "max": "128837464064",
           "min": null,
           "show": true
         },
@@ -1286,7 +1749,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 37
       },
       "id": 8,
       "panels": [],
@@ -1302,7 +1765,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1315,7 +1778,7 @@
         "h": 3,
         "w": 8,
         "x": 0,
-        "y": 32
+        "y": 38
       },
       "id": 50,
       "interval": null,
@@ -1354,7 +1817,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_frameworks_state{state=\"active\"}",
+          "expr": "max (mesos_master_frameworks_state{state=\"connected_active\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1382,7 +1845,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1395,7 +1858,7 @@
         "h": 3,
         "w": 8,
         "x": 8,
-        "y": 32
+        "y": 38
       },
       "id": 24,
       "interval": null,
@@ -1434,7 +1897,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_frameworks_state{state=\"inactive\"}",
+          "expr": "max (mesos_master_frameworks_state{state=\"connected_inactive\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1462,7 +1925,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1475,7 +1938,7 @@
         "h": 3,
         "w": 8,
         "x": 16,
-        "y": 32
+        "y": 38
       },
       "id": 51,
       "interval": null,
@@ -1514,7 +1977,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_frameworks_state{state=\"disconnected\"}",
+          "expr": "max (mesos_master_frameworks_state{state=\"disconnected_inactive\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1539,7 +2002,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 41
       },
       "id": 10,
       "panels": [],
@@ -1555,7 +2018,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1568,7 +2031,7 @@
         "h": 3,
         "w": 3,
         "x": 0,
-        "y": 36
+        "y": 42
       },
       "id": 30,
       "interval": null,
@@ -1607,7 +2070,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_task_states_current{state=\"staging\"}",
+          "expr": "max (mesos_master_task_states_current{state=\"staging\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1635,7 +2098,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1648,7 +2111,7 @@
         "h": 3,
         "w": 3,
         "x": 3,
-        "y": 36
+        "y": 42
       },
       "id": 48,
       "interval": null,
@@ -1687,7 +2150,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_task_states_current{state=\"starting\"}",
+          "expr": "max (mesos_master_task_states_current{state=\"starting\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1715,7 +2178,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1728,7 +2191,7 @@
         "h": 3,
         "w": 3,
         "x": 6,
-        "y": 36
+        "y": 42
       },
       "id": 47,
       "interval": null,
@@ -1767,7 +2230,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_task_states_current{state=\"running\"}",
+          "expr": "max (mesos_master_task_states_current{state=\"running\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1795,7 +2258,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1808,7 +2271,7 @@
         "h": 3,
         "w": 4,
         "x": 10,
-        "y": 36
+        "y": 42
       },
       "id": 46,
       "interval": null,
@@ -1847,7 +2310,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_task_states_current{state=\"killing\"}",
+          "expr": "max (mesos_master_task_states_current{state=\"killing\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1875,7 +2338,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1888,7 +2351,7 @@
         "h": 3,
         "w": 3,
         "x": 15,
-        "y": 36
+        "y": 42
       },
       "id": 34,
       "interval": null,
@@ -1927,7 +2390,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_task_states_exit_total{state=\"errored\"}",
+          "expr": "max (mesos_master_task_states_exit_total{state=\"errored\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1955,7 +2418,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1968,7 +2431,7 @@
         "h": 3,
         "w": 3,
         "x": 18,
-        "y": 36
+        "y": 42
       },
       "id": 45,
       "interval": null,
@@ -2007,7 +2470,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_task_states_exit_total{state=\"failed\"}",
+          "expr": "max (mesos_master_task_states_exit_total{state=\"failed\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2035,7 +2498,7 @@
         "#c15c17",
         "#58140c"
       ],
-      "datasource": "Prometheus",
+      "datasource": "${DS_PROMETHEUS}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2048,7 +2511,7 @@
         "h": 3,
         "w": 3,
         "x": 21,
-        "y": 36
+        "y": 42
       },
       "id": 32,
       "interval": null,
@@ -2087,7 +2550,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "mesos_master_task_states_exit_total{state=\"lost\"}",
+          "expr": "max (mesos_master_task_states_exit_total{state=\"lost\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2146,5 +2609,5 @@
   "timezone": "",
   "title": "DC/OS (1.11)",
   "uid": "hwptcExiz",
-  "version": 32
+  "version": 3
 }

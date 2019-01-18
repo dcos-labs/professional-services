@@ -108,15 +108,56 @@ Source: [Container Metrics][mesosphere-container]
 
 ## Setup Prometheus Mesos Exporter
 
+[Documentation][mesos-exporter]
+
 * systemd
+
+```bash
+curl -L https://github.com/mesos/mesos_exporter/releases/download/v1.1.1/mesos_exporter-1.1.1.linux-amd64.tar.gz -o ./mesos_exporter.tar.gz
+tar xvf ./mesos_exporter.tar.gz
+cp ./mesos_exporter-*/mesos_exporter /usr/bin/
+```
+
+```bash
+cat <<EOF | sudo tee /etc/systemd/system/mesos-exporter.service
+[Unit]
+Description=DC/OS Mesos Exporter service
+
+[Service]
+Restart=always
+RestartSec=5
+
+ExecStart=/bin/sh -c '/usr/bin/mesos_exporter -enableMasterState -master http://$(/opt/mesosphere/bin/detect_ip):5050'
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+```bash
+systemctl daemon-reload
+sudo systemctl enable mesos-exporter
+sudo systemctl restart mesos-exporter
+```
+
 * prometheus config
+
+```yaml
+  - job_name: 'mesos-exporter-master'
+
+    dns_sd_configs:
+      - names: ['master.mesos']
+        type: 'A'
+        port: 9105
+```
 
 ## Setup Marathon Exporter
 
 * systemd
 * prometheus config
 
-[mesosphere-performance]: (https://docs.mesosphere.com/1.11/monitoring/performance-monitoring/)
-[mesosphere-container]:(https://docs.mesosphere.com/1.11/metrics/reference/#container)
-[mesos-monitoring]:(http://mesos.apache.org/documentation/latest/monitoring/)
-[marathon-monitoring]:(https://mesosphere.github.io/marathon/docs/metrics.html)
+[mesosphere-performance]: https://docs.mesosphere.com/1.11/monitoring/performance-monitoring/
+[mesosphere-container]: https://docs.mesosphere.com/1.11/metrics/reference/#container)
+[mesos-monitoring]: http://mesos.apache.org/documentation/latest/monitoring/
+[marathon-monitoring]: https://mesosphere.github.io/marathon/docs/metrics.html
+[mesos-exporter]: https://github.com/mesos/mesos_exporter
