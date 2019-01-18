@@ -165,6 +165,7 @@
         {
           "expr": "max (mesos_master_cpus{type=\"used\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "legendFormat": "",
           "refId": "A"
@@ -248,6 +249,7 @@
         {
           "expr": "max (mesos_master_mem{type=\"used\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "legendFormat": "",
           "refId": "A"
@@ -331,6 +333,7 @@
         {
           "expr": "max (mesos_master_disk{type=\"used\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "legendFormat": "",
           "refId": "A"
@@ -812,6 +815,7 @@
         {
           "expr": "min (mesos_master_uptime_seconds)",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1043,6 +1047,7 @@
         {
           "expr": "max (mesos_master_elected)",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1133,6 +1138,7 @@
         {
           "expr": "round (min (mesos_registrar_log_ensemble_size) / 2, 1)",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1226,6 +1232,7 @@
         {
           "expr": "max (mesos_master_slaves_state{state=\"connected_active\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1306,6 +1313,7 @@
         {
           "expr": "max (mesos_master_slaves_state{state=\"connected_inactive\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1386,6 +1394,7 @@
         {
           "expr": "max (mesos_master_slaves_state{state=\"disconnected_inactive\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1409,7 +1418,7 @@
           {
             "evaluator": {
               "params": [
-                80
+                600
               ],
               "type": "gt"
             },
@@ -1425,13 +1434,14 @@
             },
             "reducer": {
               "params": [],
-              "type": "last"
+              "type": "avg"
             },
             "type": "query"
           }
         ],
         "executionErrorState": "alerting",
-        "frequency": "60s",
+        "for": "5m",
+        "frequency": "1m",
         "handler": 1,
         "name": "CPU Usage % (total) alert",
         "noDataState": "no_data",
@@ -1487,7 +1497,7 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 80
+          "value": 600
         }
       ],
       "timeFrom": null,
@@ -1659,6 +1669,40 @@
       }
     },
     {
+      "alert": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                96628098048
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "avg"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "Disk Used Per Node alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -1702,7 +1746,15 @@
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 96628098048
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -1814,11 +1866,12 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "",
+      "tableColumn": "Value",
       "targets": [
         {
           "expr": "max (mesos_master_frameworks_state{state=\"connected_active\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1899,6 +1952,7 @@
         {
           "expr": "max (mesos_master_frameworks_state{state=\"connected_inactive\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -1979,6 +2033,7 @@
         {
           "expr": "max (mesos_master_frameworks_state{state=\"disconnected_inactive\"})",
           "format": "time_series",
+          "instant": true,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -2609,5 +2664,5 @@
   "timezone": "",
   "title": "DC/OS (1.11)",
   "uid": "hwptcExiz",
-  "version": 7
+  "version": 6
 }
