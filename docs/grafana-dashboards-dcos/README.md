@@ -1,8 +1,19 @@
-# Grafana Dashboards for DC/OS 1.11
+# Grafana Dashboards for DC/OS
 
-Dashboards and setup instructions:
+The dashboards config files and setup instructions are provided here:
 
+* [DC/OS 1.12](dcos-1.12/)
 * [DC/OS 1.11](dcos-1.11/)
+
+## Graph samples
+
+Here are some sample graphs.
+
+![Grafana: DC/OS](./images/grafana-dcos.png)
+
+![Grafana: Kafka](./images/grafana-kafka.png)
+
+![Grafana: Cassandra](./images/grafana-cassandra.png)
 
 ## Primary Metrics to Monitor
 
