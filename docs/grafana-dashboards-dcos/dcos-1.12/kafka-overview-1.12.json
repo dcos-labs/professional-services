@@ -2,7 +2,7 @@
   "__inputs": [
     {
       "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
+      "label": "prometheus",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.4.3"
+      "version": "5.3.4"
     },
     {
       "type": "panel",
@@ -56,6 +56,264 @@
   "links": [],
   "panels": [
     {
+      "columns": [
+        {
+          "text": "Current",
+          "value": "current"
+        }
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "State",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "mappingType": 1,
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "string",
+          "unit": "sci",
+          "valueMaps": [
+            {
+              "text": "Running",
+              "value": "3"
+            },
+            {
+              "text": "Not Running",
+              "value": "0"
+            },
+            {
+              "text": "Starting",
+              "value": "1"
+            },
+            {
+              "text": "Recovering",
+              "value": "2"
+            },
+            {
+              "text": "Pending Shutdown",
+              "value": "6"
+            },
+            {
+              "text": "Shutting Down",
+              "value": "7"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Time",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "Host",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "host",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Offline Partitions",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #B",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Leaders",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #C",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Controller",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #D",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "text": "true",
+              "value": "1"
+            },
+            {
+              "text": "false",
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "alias": "Under Replicated Partitions",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #E",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Partitions",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #F",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "max by (host) (kafka_controller_kafkacontroller_activecontrollercount)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "D"
+        },
+        {
+          "expr": "max by (host) (kafka_server_kafkaserver_brokerstate)",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "State",
+          "refId": "A"
+        },
+        {
+          "expr": "max by (host) (kafka_server_replicamanager_leadercount)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "legendFormat": "Leaders",
+          "refId": "C"
+        },
+        {
+          "expr": "max by (host) (kafka_server_replicamanager_partitioncount)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "F"
+        },
+        {
+          "expr": "max by (host) (kafka_controller_kafkacontroller_offlinepartitionscount)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 1,
+          "legendFormat": "Offline Partitions",
+          "refId": "B"
+        },
+        {
+          "expr": "max by (host) (kafka_cluster_partition_underreplicated)",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "E"
+        }
+      ],
+      "title": "Broker State",
+      "transform": "table",
+      "type": "table"
+    },
+    {
       "aliasColors": {
         "localhost:7071": "#629E51"
       },
@@ -71,9 +329,9 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 0
+        "y": 8
       },
-      "id": 1,
+      "id": 10,
       "isNew": true,
       "legend": {
         "avg": false,
@@ -85,9 +343,9 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -98,10 +356,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(cpus_system_time_secs{service_name=\"confluent-kafka\"}[1m])",
+          "expr": "min(cpus_limit{service_name=\"confluent-kafka\"})",
           "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{host}}",
+          "intervalFactor": 1,
+          "legendFormat": "CPU Limit",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(cpus_system_time_secs{service_name=\"confluent-kafka\"}[2m]) + rate(cpus_user_time_secs{service_name=\"confluent-kafka\"}[2m])",
+          "format": "time_series",
+          "instant": false,
+          "interval": "1m",
+          "intervalFactor": 1,
+          "legendFormat": "CPU Usage {{host}}",
           "metric": "process_cpu_seconds_total",
           "refId": "A",
           "step": 4
@@ -165,9 +432,9 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 0
+        "y": 8
       },
-      "id": 2,
+      "id": 12,
       "isNew": true,
       "legend": {
         "avg": false,
@@ -179,9 +446,9 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -192,10 +459,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum without(area)(mem_total_bytes{service_name=\"confluent-kafka\"})",
+          "expr": "min(mem_limit_bytes{service_name=\"confluent-kafka\"})",
           "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{host}}",
+          "intervalFactor": 1,
+          "legendFormat": "Memory Limit",
+          "refId": "B"
+        },
+        {
+          "expr": "mem_total_bytes{service_name=\"confluent-kafka\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Memory Usage {{host}}",
           "metric": "jvm_memory_bytes_used",
           "refId": "A",
           "step": 4
@@ -259,9 +533,9 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 0
+        "y": 8
       },
-      "id": 3,
+      "id": 14,
       "isNew": true,
       "legend": {
         "avg": false,
@@ -273,9 +547,9 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -286,10 +560,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum without(area)(disk_used_bytes{service_name=\"confluent-kafka\"})",
+          "expr": "min(disk_limit_bytes{service_name=\"confluent-kafka\"})",
           "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{host}}",
+          "intervalFactor": 1,
+          "legendFormat": "Disk Limit",
+          "refId": "B"
+        },
+        {
+          "expr": "disk_used_bytes{service_name=\"confluent-kafka\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Disk Usage {{host}}",
           "metric": "jvm_gc_collection_seconds_sum",
           "refId": "A",
           "step": 4
@@ -351,7 +632,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 7
+        "y": 15
       },
       "id": 4,
       "isNew": true,
@@ -443,7 +724,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 7
+        "y": 15
       },
       "id": 5,
       "isNew": true,
@@ -535,7 +816,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 7
+        "y": 15
       },
       "id": 6,
       "isNew": true,
@@ -614,134 +895,261 @@
       }
     },
     {
-      "columns": [
-        {
-          "text": "Current",
-          "value": "current"
-        }
-      ],
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "fontSize": "100%",
+      "description": "Average messages per second per Kafka broker",
+      "fill": 1,
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 8,
         "x": 0,
-        "y": 14
+        "y": 22
       },
-      "id": 8,
+      "id": 16,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
       "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 1,
-        "desc": false
-      },
-      "styles": [
-        {
-          "alias": "State",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "mappingType": 1,
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "string",
-          "unit": "sci",
-          "valueMaps": [
-            {
-              "text": "Running",
-              "value": "3"
-            },
-            {
-              "text": "Not Running",
-              "value": "0"
-            },
-            {
-              "text": "Starting",
-              "value": "1"
-            },
-            {
-              "text": "Recovering",
-              "value": "2"
-            },
-            {
-              "text": "Pending Shutdown",
-              "value": "6"
-            },
-            {
-              "text": "Shutting Down",
-              "value": "7"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "date",
-          "unit": "short"
-        },
-        {
-          "alias": "Host",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Metric",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "expr": "kafka_server_kafkaserver_brokerstate",
+          "expr": "sum(kafka_server_brokertopicmetrics_messagesinpersec_15minuterate)by(task_name)",
           "format": "time_series",
-          "instant": true,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": " {{task_name}} - {{host}}",
+          "legendFormat": "{{task_name}}",
           "refId": "A"
         }
       ],
-      "title": "Broker State",
-      "transform": "timeseries_to_rows",
-      "type": "table"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Kafka avg msg/sec (15m) per Broker",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 22
+      },
+      "id": 18,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(kafka_server_brokertopicmetrics_totalproducerequestspersec_15minuterate)by(task_name)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{task_name}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Produce Request Rate / sec (15min) by Broker",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 22
+      },
+      "id": 20,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(kafka_server_brokertopicmetrics_totalfetchrequestspersec_15minuterate)by(task_name)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{task_name}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Fetch Request Rate / sec (15min) by Broker",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "schemaVersion": 16,
@@ -782,5 +1190,5 @@
   "timezone": "browser",
   "title": "Kafka Overview (1.12)",
   "uid": "gl2Bdq1mz",
-  "version": 3
+  "version": 8
 }

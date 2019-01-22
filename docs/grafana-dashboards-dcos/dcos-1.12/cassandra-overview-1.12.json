@@ -633,9 +633,9 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -646,9 +646,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "org_apache_cassandra_metrics_clientrequest_latency_write_mean",
+          "expr": "org_apache_cassandra_metrics_clientrequest_latency_write_m1_rate > 0",
           "format": "time_series",
-          "intervalFactor": 2,
+          "instant": false,
+          "intervalFactor": 1,
           "legendFormat": "{{task_name}}",
           "metric": "kafka_server_brokertopicmetrics_bytesin_total",
           "refId": "A",
@@ -676,8 +677,8 @@
       },
       "yaxes": [
         {
-          "format": "Bps",
-          "label": "Bytes/s",
+          "format": "wps",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -725,9 +726,9 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -738,9 +739,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "org_apache_cassandra_metrics_clientrequest_latency_write_mean",
+          "expr": "org_apache_cassandra_metrics_clientrequest_latency_read_m1_rate",
           "format": "time_series",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "{{task_name}}",
           "metric": "kafka_server_brokertopicmetrics_bytesin_total",
           "refId": "A",
@@ -751,7 +752,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Throughput - Write requests per second",
+      "title": "Throughput - Read requests per second",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -768,8 +769,8 @@
       },
       "yaxes": [
         {
-          "format": "Bps",
-          "label": "Bytes/s",
+          "format": "rps",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -817,9 +818,9 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -830,9 +831,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "org_apache_cassandra_metrics_clientrequest_latency_write_mean > 0 ",
+          "expr": "org_apache_cassandra_metrics_clientrequest_latency_write_mean",
           "format": "time_series",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "{{task_name}}",
           "metric": "kafka_server_brokertopicmetrics_bytesin_total",
           "refId": "A",
@@ -909,9 +910,9 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -922,9 +923,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "org_apache_cassandra_metrics_clientrequest_latency_read_mean > 0 ",
+          "expr": "org_apache_cassandra_metrics_clientrequest_latency_read_mean",
           "format": "time_series",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "{{task_name}}",
           "metric": "kafka_server_brokertopicmetrics_bytesin_total",
           "refId": "A",
@@ -957,6 +958,189 @@
           "logBase": 1,
           "max": null,
           "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "id": 15,
+      "isNew": true,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "org_apache_cassandra_metrics_cache_hitrate_keycache * 100",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{task_name}}",
+          "metric": "kafka_server_brokertopicmetrics_bytesin_total",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Key Cache - Hit Rate",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 17,
+      "isNew": true,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(jvm_gc_parnew_time{service_name=\"cassandra\"}[5m]) + irate(jvm_gc_concurrentmarksweep_time{service_name=\"cassandra\"}[5m])",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{task_name}}",
+          "refId": "A",
+          "step": 240
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "JVM GC count",
+      "tooltip": {
+        "msResolution": true,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "ms",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
           "show": true
         },
         {
@@ -1013,5 +1197,5 @@
   "timezone": "browser",
   "title": "Cassandra Overview (1.12)",
   "uid": "irfqJFQik",
-  "version": 9
+  "version": 7
 }
