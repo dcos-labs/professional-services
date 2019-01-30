@@ -5,15 +5,26 @@ The dashboards config files and setup instructions are provided here:
 * [DC/OS 1.12](dcos-1.12/)
 * [DC/OS 1.11](dcos-1.11/)
 
+## Table of Contents
+
+* [Graph samples](#graph-samples)
+* [Primary Metrics to Monitor](#primary-metrics-to-monitor)
+  * [Mesos Metrics](#mesos-metrics)
+  * [Marathon Metrics](#marathon-metrics)
+  * [Container Metrics](#container-metrics)
+* [Edge-LB Metrics](#edge-lb-metrics)
+
 ## Graph samples
 
 Here are some sample graphs.
 
-![Grafana: DC/OS](./images/grafana-dcos.png)
+[![Grafana: DC/OS](./images/grafana-dcos.png)](dcos-1.12/dcos-overview-1.12.json)
 
-![Grafana: Kafka](./images/grafana-kafka.png)
+[![Grafana: Kafka](./images/grafana-kafka.png)](dcos-1.12/kafka-overview-1.12.json)
 
-![Grafana: Cassandra](./images/grafana-cassandra.png)
+[![Grafana: Cassandra](./images/grafana-cassandra.png)](dcos-1.12/cassandra-overview-1.12.json)
+
+[![Grafana: Edge-LB](./images/grafana-edge-lb.png)](dcos-1.12/edge-lb-1.12.json)
 
 ## Primary Metrics to Monitor
 
@@ -121,7 +132,68 @@ Response is returned as a JSON document and the returned Metrics include the fol
 
 Source: [Container Metrics][mesosphere-container]
 
+## Edge-LB Metrics
+
+Source: [Datadog: HAProxy Performance][datadog-haproxy]
+
+### Health Monitoring
+
+Edge-LB provides (external to internal) load-balancing and is based on HAProxy. You would monitor Edge-LB the same way you would monitor the HTTP protocols it is load balancing. For example, you would have your monitoring application make HTTP request against the load balancer and the HTTP backends. If you get a negative result, that means the load balancer either stopped working or all the backends are not responding.
+
+### Pool Utilization
+
+Since the Edge-LB Pool servers are started as a Mesos task, you can use the DC/OS Prometheus endpoint to retrieve the following measurements: CPU, Memory, Disk, Network, Metadata the same as with any other task started on DC/OS. The following metrics should be watched for the utilization og the HAProxy Mesos Task:
+
+**Overall load balancer utilization:** load balancer CPU and memory usage.
+
+| Metric | Description | Type | Alert |
+|---|---|---|---|
+| cpus_user_time_secs | Total CPU time spent. | Utilization | 75 % |
+| mem_total_bytes | Total memory of a process in RAM. | Utilization | 75 % |
+
+### HAProxy Metrics
+
+You can attach directly to the HAProxy instance started by the Edge-LB service. HAProxy has mainly two components:
+
+* _Frontend:_ This refers to the endpoint for serving client requests.
+* _Backend:_ This refers to the actual service endpoints for whom Edge-LB is doing balancing.
+
+Monitoring the load balancer means monitoring these frontend, backend metrics and overall load balancer health metrics.
+
+**Overall load balancer health metrics:** Number of healthy backends for each frontend and number of healthy servers for each backend.
+
+| Metric | Description | Type | Alert |
+|---|---|---|---|
+| backend_up | Current health status of the backend (UP or DOWN). | Availability | Any Decrease |
+| server_up | Current health status of the backend server (UP or DOWN). | Availability | Any Decrease |
+
+**Frontend metrics:** This includes metrics like client requests per second, client response codes, bytes sent/received by/from clients.
+
+| Metric | Description | Type | Alert |
+|---|---|---|---|
+| req_rate | HTTP requests per second | Throughput | Dashboard |
+| rate | Number of sessions created per second. Note: Define session limit based on historical trends to avoid denial of service. | Throughput | Dashboard |
+| session utilization (computed) | Percentage of sessions used (scur / slim * 100) | Utilization | 75 % |
+| ereq | Number of request errors | Error | Significant Increase | |
+| dreq | Requests denied due to security concerns (ACL-restricted) | Error | Significant Increase |
+| hrsp_4xx | Number of HTTP client errors | Error | Dashboard |
+| hrsp_5xx | Number of HTTP server errors | Error | Dashboard |
+| bin | Number of bytes received by the frontend. Note: Monitor in order to decide if you need to scale your network infrastructure | Utilization | Dashboard |
+| bout | Number of bytes sent by the frontend. Note: Monitor in order to decide if you need to scale your network infrastructure | Utilization | Dashboard |
+
+**Backend metrics:** This includes metrics like average backend response time, average time spent by a request in a queue before being served by the backend, queue length.
+
+| Metric | Description | Type | Alert |
+|---|---|---|---|
+| rtime | Average backend response time (in ms) for the last 1,024 requests | Throughput | > 250 ms |
+| econ | Number of requests that encountered an error attempting to connect to a backend | server | Error | Dashboard |
+| eresp | Number of requests whose responses yielded an error | Error | Dashboard |
+| qcur | Current number of requests unassigned in queue | Saturation | Significant Increase |
+| qtime | Average time spent in queue (in ms) for the last 1,024 requests | Saturation | > 250 ms |
+| wredis | Number of times a request was redispatched to a different backend | Availability | Dashboard |
+
 [mesosphere-performance]: https://docs.mesosphere.com/1.11/monitoring/performance-monitoring/
 [mesosphere-container]: https://docs.mesosphere.com/1.11/metrics/reference/#container
 [mesos-monitoring]: http://mesos.apache.org/documentation/latest/monitoring/
 [marathon-monitoring]: https://mesosphere.github.io/marathon/docs/metrics.html
+[datadog-haproxy]: https://www.datadoghq.com/blog/monitoring-haproxy-performance-metrics/
