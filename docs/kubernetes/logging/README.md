@@ -228,7 +228,7 @@ fluentd       4         4         4       4            4           <none>       
 
 Open Kibana at: `https://<dcos-master>/service/kibana`
 Click on**Discover**in the left-hand navigation menu.
-Enter `logstash-*` in the text box and click on**Next step**.
+Enter `logstash-*` in the text box and click on **Next step**.
 This allows you to configure which field Kibana will use to filter log data by time. In the dropdown, select the `@timestamp` field, and hit **Create index pattern**.
 Now, hit **Discover** in the left hand navigation menu.
 
