@@ -4,3 +4,4 @@ Below you can find some guides on common Kubernetes Day2Operations, for clusters
 
 * [Logging](logging/)
 * [Metrics and Alerting](metrics/)
+* [Backup and Restore](backup/)

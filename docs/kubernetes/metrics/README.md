@@ -273,29 +273,6 @@ dcos node ssh --master-proxy --leader --user centos --option LocalForward=1025=p
 
 ## Install Grafana via DC/OS
 
-Setup a Service Account for Grafana
-
-```bash
-dcos security org service-accounts keypair /tmp/grafana-private-key.pem /tmp/grafana-public-key.pem
-dcos security org service-accounts create -p /tmp/grafana-public-key.pem -d "grafana service account" grafana
-dcos security secrets create-sa-secret --strict /tmp/grafana-private-key.pem grafana grafana/secret
-```
-
-Grant permissions to the Service Account
-
-```bash
-dcos security org users grant grafana 'dcos:mesos:master:framework:role:grafana-role' create
-dcos security org users grant grafana 'dcos:mesos:master:reservation:role:grafana-role' create
-dcos security org users grant grafana 'dcos:mesos:master:volume:role:grafana-role' create
-dcos security org users grant grafana 'dcos:mesos:master:task:user:nobody' create
-dcos security org users grant grafana 'dcos:mesos:master:reservation:principal:grafana' delete
-dcos security org users grant grafana 'dcos:mesos:master:volume:principal:grafana' delete
-dcos security org users grant grafana 'dcos:secrets:default:/grafana/*' full
-dcos security org users grant grafana 'dcos:secrets:list:default:/grafana' read
-dcos security org users grant grafana 'dcos:adminrouter:ops:ca:rw' full
-dcos security org users grant grafana 'dcos:adminrouter:ops:ca:ro' full
-```
-
 Define the options that Grafana should get installed with
 
 ```json
