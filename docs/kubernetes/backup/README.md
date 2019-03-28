@@ -29,32 +29,30 @@ On your local machine point your browser to [http://localhost:9000](http://local
 
 ![Minio: Test Bucket](./minio.png)
 
-## Configure/Install Heptio Ark 
-[Disaster Recovery - Mesosphere DC/OS Documentation](https://docs.mesosphere.com/services/kubernetes/1.2.2-1.10.7/disaster-recovery/)
-[ark/examples/minio at master · heptio/ark · GitHub](https://github.com/heptio/ark/tree/master/examples/minio)
+## Configure/Install Velero
 
-Install ark cli (e.g. on Mac):
+Install velero cli (e.g. on Mac):
 
 ```bash
-brew install ark 
+brew install velero 
 ```
 
-Install the prerequisites for ark on your Kubernetes cluster:
+Install the prerequisites for Velero on your Kubernetes cluster:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/heptio/velero/v0.10.1/examples/common/00-prereqs.yaml
+kubectl apply -f https://raw.githubusercontent.com/heptio/velero/v0.11.0/examples/common/00-prereqs.yaml
 ```
 
-Apply the following config for Ark to use the Minio backend: 
+Apply the following config for Velero to use the Minio backend:
 
 ```yaml
 kubectl apply -f - <<EOF
 ---
-apiVersion: ark.heptio.com/v1
+apiVersion: velero.io/v1
 kind: BackupStorageLocation
 metadata:
   name: default
-  namespace: heptio-ark
+  namespace: velero
 spec:
   provider: aws
   objectStorage:
@@ -67,7 +65,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: heptio-ark
+  namespace: velero
   name: cloud-credentials
   labels:
     component: minio
@@ -79,7 +77,7 @@ stringData:
 EOF
 ```
 
-Deploy Ark:
+Deploy Velero:
 
 ```yaml
 kubectl apply -f - <<EOF
@@ -87,26 +85,26 @@ kubectl apply -f - <<EOF
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  namespace: heptio-ark
-  name: ark
+  namespace: velero
+  name: velero
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: ark
+        component: velero
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8085"
         prometheus.io/path: "/metrics"
     spec:
       restartPolicy: Always
-      serviceAccountName: ark
+      serviceAccountName: velero
       containers:
-        - name: ark
-          image: gcr.io/heptio-images/ark:latest
+        - name: velero
+          image: gcr.io/heptio-images/velero:latest
           command:
-            - /ark
+            - /velero
           args:
             - server
           volumeMounts:
@@ -119,7 +117,7 @@ spec:
           env:
             - name: AWS_SHARED_CREDENTIALS_FILE
               value: /credentials/cloud
-            - name: ARK_SCRATCH_DIR
+            - name: VELERO_SCRATCH_DIR
               value: /scratch
       volumes:
         - name: cloud-credentials
@@ -132,23 +130,23 @@ spec:
 EOF
 ```
 
-Check if Ark initialized and is using Minio as a backend:
+Check if Velero initialized and is using Minio as a backend:
 
 ```yaml
-$ kubectl get BackupStorageLocation -n heptio-ark default -o yaml
-apiVersion: ark.heptio.com/v1
+$ kubectl get BackupStorageLocation -n velero default -o yaml
+apiVersion: velero.io/v1
 kind: BackupStorageLocation
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"ark.heptio.com/v1","kind":"BackupStorageLocation","metadata":{"annotations":{},"name":"default","namespace":"heptio-ark"},"spec":{"config":{"region":"minio","s3ForcePathStyle":"true","s3Url":"http://minio.marathon.l4lb.thisdcos.directory:9000"},"objectStorage":{"bucket":"test"},"provider":"aws"}}
-  creationTimestamp: "2019-02-06T22:02:18Z"
-  generation: 1
+      {"apiVersion":"velero.io/v1","kind":"BackupStorageLocation","metadata":{"annotations":{},"name":"default","namespace":"velero"},"spec":{"config":{"region":"minio","s3ForcePathStyle":"true","s3Url":"http://minio.marathon.l4lb.thisdcos.directory:9000"},"objectStorage":{"bucket":"test"},"provider":"aws"}}
+  creationTimestamp: "2019-03-28T05:31:25Z"
+  generation: 2
   name: default
-  namespace: heptio-ark
-  resourceVersion: "2376"
-  selfLink: /apis/ark.heptio.com/v1/namespaces/heptio-ark/backupstoragelocations/default
-  uid: def458d6-2a5a-11e9-91ef-6ae1b3f07784
+  namespace: velero
+  resourceVersion: "2588"
+  selfLink: /apis/velero.io/v1/namespaces/velero/backupstoragelocations/default
+  uid: bae00299-511a-11e9-a88a-fed4c63d1e32
 spec:
   config:
     region: minio
@@ -159,12 +157,12 @@ spec:
   provider: aws
 status:
   lastSyncedRevision: ""
-  lastSyncedTime: "2019-02-06T22:03:43.906657996Z"
+  lastSyncedTime: "2019-03-28T05:34:46.171183989Z"
 ```
 
 ## Test Backup/Restore of a Namespace
 
-Apply the [Nginx Example](https://raw.githubusercontent.com/heptio/ark/master/examples/nginx-app/base.yaml)  from the Ark docs:
+Apply the [Nginx Example](https://raw.githubusercontent.com/heptio/velero/master/examples/nginx-app/base.yaml)  from the Velero docs:
 
 ```yaml
 kubectl apply -f - <<EOF
@@ -232,13 +230,13 @@ replicaset.apps/nginx-deployment-5c689d88bb   2         2         2       14s
 Create a backup:
 
 ```bash
-ark backup create nginx-backup --include-namespaces nginx-example
+velero backup create nginx-backup --include-namespaces nginx-example
 ```
 
 Check if the backup was successful:
 
 ```bash
-ark backup describe nginx-backup
+velero backup describe nginx-backup
 ```
 
 Delete the namespace:
@@ -250,7 +248,7 @@ kubectl delete namespaces nginx-example
 When the deletion completed, perform a restore of the namespace:
 
 ```bash
-ark restore create --from-backup nginx-backup
+velero restore create --from-backup nginx-backup
 ```
 
 Check that namespace and it’s pods and services got successfully restored:
