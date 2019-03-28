@@ -10,8 +10,58 @@ This tutorial expects a Kubernetes-Cluster (as part of MKE) is already deployed 
 
 ## Install Minio
 
+Setup a Service Account for Minio
+
 ```bash
-dcos package install minio
+dcos security org service-accounts keypair /tmp/minio-private-key.pem /tmp/minio-public-key.pem
+dcos security org service-accounts create -p /tmp/minio-public-key.pem -d "minio service account" minio
+dcos security secrets create-sa-secret --strict /tmp/minio-private-key.pem minio minio/secret
+```
+
+Grant permissions to the Service Account
+
+```bash
+dcos security org users grant minio 'dcos:mesos:master:framework:role:minio-role' create
+dcos security org users grant minio 'dcos:mesos:master:reservation:role:minio-role' create
+dcos security org users grant minio 'dcos:mesos:master:volume:role:minio-role' create
+dcos security org users grant minio 'dcos:mesos:master:task:user:nobody' create
+dcos security org users grant minio 'dcos:mesos:master:reservation:principal:minio' delete
+dcos security org users grant minio 'dcos:mesos:master:volume:principal:minio' delete
+dcos security org users grant minio 'dcos:secrets:default:/minio/*' full
+dcos security org users grant minio 'dcos:secrets:list:default:/minio' read
+dcos security org users grant minio 'dcos:adminrouter:ops:ca:rw' full
+dcos security org users grant minio 'dcos:adminrouter:ops:ca:ro' full
+```
+
+Define the options that Minio should get installed with.
+
+```json
+cat <<EOF | tee /tmp/minio.json
+{
+  "service": {
+    "name": "minio",
+    "user": "nobody",
+    "ssl_enabled": false,
+    "service_account": "minio",
+    "service_account_secret": "minio/secret"
+  },
+  "minio": {
+    "minio_access_key": "minio",
+    "minio_secret_key": "minio123",
+    "minio_port": 9000,
+    "count": 4,
+    "cpus": 2,
+    "mem": 252,
+    "disk": 200
+  }
+}
+EOF
+```
+
+- Install Minio
+
+```bash
+dcos package install miniod --package-version 0.1.0-RELEASE.2018-07-31T02-11-47Z --options /tmp/minio.json
 ```
 
 The default credentials are:
@@ -22,7 +72,7 @@ The default credentials are:
 For easy access do SSH port forwarding to access the Minio UI from your local machine:
 
 ```bash
-dcos node ssh --master-proxy --leader --user centos --option LocalForward=9000=minio.marathon.l4lb.thisdcos.directory:9000
+dcos node ssh --master-proxy --leader --user centos --option LocalForward=9000=miniod.minio.l4lb.thisdcos.directory:9000
 ```
 
 On your local machine point your browser to [http://localhost:9000](http://localhost:9000/), login to Minio and create a bucket called “test” that has read/write permissions:
@@ -60,7 +110,7 @@ spec:
   config:
     region: minio
     s3ForcePathStyle: "true"
-    s3Url: http://minio.marathon.l4lb.thisdcos.directory:9000
+    s3Url: http://miniod.minio.l4lb.thisdcos.directory:9000
 ---
 apiVersion: v1
 kind: Secret
@@ -139,25 +189,25 @@ kind: BackupStorageLocation
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"velero.io/v1","kind":"BackupStorageLocation","metadata":{"annotations":{},"name":"default","namespace":"velero"},"spec":{"config":{"region":"minio","s3ForcePathStyle":"true","s3Url":"http://minio.marathon.l4lb.thisdcos.directory:9000"},"objectStorage":{"bucket":"test"},"provider":"aws"}}
+      {"apiVersion":"velero.io/v1","kind":"BackupStorageLocation","metadata":{"annotations":{},"name":"default","namespace":"velero"},"spec":{"config":{"region":"minio","s3ForcePathStyle":"true","s3Url":"http://miniod.minio.l4lb.thisdcos.directory:9000"},"objectStorage":{"bucket":"test"},"provider":"aws"}}
   creationTimestamp: "2019-03-28T05:31:25Z"
-  generation: 2
+  generation: 6
   name: default
   namespace: velero
-  resourceVersion: "2588"
+  resourceVersion: "4302"
   selfLink: /apis/velero.io/v1/namespaces/velero/backupstoragelocations/default
   uid: bae00299-511a-11e9-a88a-fed4c63d1e32
 spec:
   config:
     region: minio
     s3ForcePathStyle: "true"
-    s3Url: http://minio.marathon.l4lb.thisdcos.directory:9000
+    s3Url: http://miniod.minio.l4lb.thisdcos.directory:9000
   objectStorage:
     bucket: test
   provider: aws
 status:
-  lastSyncedRevision: ""
-  lastSyncedTime: "2019-03-28T05:34:46.171183989Z"
+  lastSyncedRevision: e712a5a5-291e-439d-b223-4474b365405d
+  lastSyncedTime: "2019-03-28T05:37:47.235623965Z"
 ```
 
 ## Test Backup/Restore of a Namespace
