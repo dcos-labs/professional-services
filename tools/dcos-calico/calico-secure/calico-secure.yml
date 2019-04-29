@@ -1,0 +1,93 @@
+- hosts: agents:agent_publics:masters
+  remote_user: centos
+  become: yes
+  vars:
+    dcos_calico_bootstrap_path: "/var/lib/dcos-calico"
+
+  tasks:
+
+  - name: create install directory
+    file: 
+      path: "{{ dcos_calico_bootstrap_path }}"
+      state: directory
+      mode: 0755
+
+  - name: create files
+    copy:
+      src: "{{ item }}"
+      dest: "{{ dcos_calico_bootstrap_path }}/{{ item }}"
+      mode: 0644
+    loop:
+      - 1a-env.export.sh
+      - 1b-prereqs-certs.sh
+      - 1c-prereqs-systemd.sh
+      - 1d-prereqs-conf.sh
+      - 1do-prereqs-conf.sh
+      - 2-package-install.sh
+      - 3-enable-masters.sh
+      - 3o-enable-masters.sh
+      - 4-set-up-pool.sh
+      - 5-enable-agents.sh
+      - 5o-enable-agents.sh
+      - 6-kubernetes.sh
+      - 6o-kubernetes.sh
+      - 7-kubernetes-bootstrap.sh
+      - 7o-kubernetes-bootstrap.sh
+
+  - name: 1a Create env.export on all nodes. This will set up environment variables, and is used by other scripts.
+    command: bash ./1a-env.export.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
+
+  - name: 1b Generate certs on all nodes
+    command: bash ./1b-prereqs-certs.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
+
+  - name: 1c Generate systemd units (and accompanying env files) on all nodes
+    command: bash ./1c-prereqs-systemd.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
+
+  - name: 1d Generate conf files on all nodes
+    command: bash ./1d-prereqs-conf.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
+
+  - name: 2 Run the package install on all nodes.  This downloads all binaries and packages
+    command: bash ./2-package-install.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
+
+- hosts: masters
+  remote_user: centos
+  become: yes
+  vars:
+    dcos_calico_bootstrap_path: "/var/lib/dcos-calico"
+
+  tasks:
+
+  - name: 3 On all masters, run the enable-masters commands. This starts all processes. Note that depending on whether your docker config has overlay configured in the systemd unit or elsewhere, you'll have to consider removing the overlay line from /etc/docker/daemon.json
+    command: bash ./3-enable-masters.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
+
+  - name: 4 On one master, run the commands from set-up-pool.  This creates a cluster-wide Calico IP pool, used for all containers.
+    command: bash ./4-set-up-pool.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
+    run_once: true
+    ignore_errors: yes
+
+- hosts: agents:agent_publics
+  remote_user: centos
+  become: yes
+  vars:
+    dcos_calico_bootstrap_path: "/var/lib/dcos-calico"
+
+  tasks:
+
+  - name: 5 On all agents (private and public), run the enable-agents commands.  This starts all processes.
+    command: bash ./5-enable-agents.sh
+    args:
+      chdir: "{{ dcos_calico_bootstrap_path }}"
