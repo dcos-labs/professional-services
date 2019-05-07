@@ -227,9 +227,9 @@ EOF
 Encode the content of the Prometheus configuration files with `base64`, in order to pass them as a DC/OS package option
 
 ```bash
-export PROM_CONFIG=$(base64 /tmp/prometheus-config.yml)
-export PROM_ALERTMANAGER=$(base64 /tmp/prometheus-alertmanager.yml)
-export PROM_RULES=$(base64 /tmp/prometheus_combined.yaml)
+export PROM_CONFIG=$(base64 -w 0 /tmp/prometheus-config.yml)
+export PROM_ALERTMANAGER=$(base64 -w 0 /tmp/prometheus-alertmanager.yml)
+export PROM_RULES=$(base64 -w 0 /tmp/prometheus_combined.yaml)
 ```
 
 Define the options that Prometheus should get installed with
