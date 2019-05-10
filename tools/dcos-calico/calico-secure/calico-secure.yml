@@ -29,10 +29,6 @@
       - 4-set-up-pool.sh
       - 5-enable-agents.sh
       - 5o-enable-agents.sh
-      - 6-kubernetes.sh
-      - 6o-kubernetes.sh
-      - 7-kubernetes-bootstrap.sh
-      - 7o-kubernetes-bootstrap.sh
 
   - name: 1a Create env.export on all nodes. This will set up environment variables, and is used by other scripts.
     command: bash ./1a-env.export.sh

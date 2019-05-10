@@ -1,7 +1,7 @@
 tee env.export <<-'EOF'
 # This will be customer-specific, so it's at the top
 # This export file is used to generate env files for all systemd units
-export CALICO_CIDR=172.16.0.0/16
+export CALICO_CIDR=192.168.0.0/16
 
 # 2379 and 2380 are within the DC/OS service port range, and are used by the etcd included with Calico.
 export ETCD_LISTEN_PORT=62379
