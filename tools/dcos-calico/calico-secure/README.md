@@ -6,7 +6,7 @@ This entire process is meant to be relatively automatable - you can basically pu
 
 Depending on whether your docker config has `overlay` configured in the systemd unit or elsewhere, you'll have to consider removing the `overlay` line from /etc/docker/daemon.json - the command to do this is commented out in this script. If you're deploying on Mesosphere-provided AMIs, you may have to uncomment this command (so it gets automa†ically removed) from both enable-masters and enable-agents.
 
- This sets up a default pool of 172.16.0.0/16 (which supports something like 65k containers). You want to change this to meet the following requirements:
+ This sets up a default pool of 192.168.0.0/16 (which supports something like 65k containers). You want to change this to meet the following requirements:
 -Size the subnet accordingly
 -Use a subnet that doesn't overlap with your environment.
 This is configured in an environment variable that gets propagated to /etc/calico/ippool.json - if you need to change it, change it in the original env variable, or change it directly in the file prior to setting up the ip pool.
