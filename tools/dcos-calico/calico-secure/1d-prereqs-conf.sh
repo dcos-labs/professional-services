@@ -24,11 +24,12 @@ sudo sed -i "s|ETCD_LISTEN_PORT|${ETCD_LISTEN_PORT}|g" /etc/docker/daemon.json
 #### Mesos CNI Config
 sudo tee ${CALICO_CNI_CONF_DIR}/${CALICO_CNI_CONF_FILE} <<-'EOF'
 {
-   "name": "calico",
+   "name": "CALICO_NAME",
    "cniVersion": "0.1.0",
    "type": "calico",
    "ipam": {
-       "type": "calico-ipam"
+       "type": "calico-ipam",
+       "ipv4_pools": ["CALICO_CIDR"]
    },
    "etcd_endpoints": "https://127.0.0.1:ETCD_LISTEN_PORT",
    "etcd_ca_cert_file": "CALICO_CNI_CERTS_DIR/dcos-ca.crt",
@@ -36,6 +37,8 @@ sudo tee ${CALICO_CNI_CONF_DIR}/${CALICO_CNI_CONF_FILE} <<-'EOF'
    "etcd_cert_file": "CALICO_CNI_CERTS_DIR/calico.crt"
 }
 EOF
+sudo sed -i "s|CALICO_CIDR|${CALICO_CIDR}|g" ${CALICO_CNI_CONF_DIR}/${CALICO_CNI_CONF_FILE}
+sudo sed -i "s|CALICO_NAME|${CALICO_NAME}|g" ${CALICO_CNI_CONF_DIR}/${CALICO_CNI_CONF_FILE}
 sudo sed -i "s|CALICO_CNI_CERTS_DIR|${CALICO_CNI_CERTS_DIR}|g" ${CALICO_CNI_CONF_DIR}/${CALICO_CNI_CONF_FILE}
 sudo sed -i "s|ETCD_LISTEN_PORT|${ETCD_LISTEN_PORT}|g" ${CALICO_CNI_CONF_DIR}/${CALICO_CNI_CONF_FILE}
 
