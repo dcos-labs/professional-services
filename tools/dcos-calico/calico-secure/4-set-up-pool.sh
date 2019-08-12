@@ -9,4 +9,4 @@ sudo calicoctl apply -f /etc/calico/ippool.json
 sudo calicoctl get ipps -o json
 
 ### Set up Docker network
-docker network create --driver calico --ipam-driver calico-ipam calico
+docker network create --driver calico --ipam-driver calico-ipam --subnet=${CALICO_CIDR} ${CALICO_NAME}
