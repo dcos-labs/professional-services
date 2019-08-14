@@ -1,4 +1,4 @@
-source env.export
+source 1a-env.export.sh
 
 
 sudo mkdir -p /etc/etcd

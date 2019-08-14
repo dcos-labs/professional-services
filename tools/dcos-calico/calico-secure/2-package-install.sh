@@ -1,4 +1,4 @@
-source env.export
+source 1a-env.export.sh
 
 
 sudo mkdir -p ${ETCD_ROOT_DIR}
@@ -24,3 +24,7 @@ sudo chmod +x /usr/bin/calicoctl
 
 ## Download Docker image for Calico node
 sudo docker pull ${CALICO_NODE_IMAGE}
+
+## https://github.com/projectcalico/calico/issues/2191
+sudo sh -c 'echo 1 > /proc/sys/net/ipv6/conf/default/disable_ipv6'
+sudo sh -c 'echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6'

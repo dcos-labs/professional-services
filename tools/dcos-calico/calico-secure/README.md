@@ -9,7 +9,7 @@ Depending on whether your docker config has `overlay` configured in the systemd 
  This sets up a default pool of 192.168.0.0/16 (which supports something like 65k containers). You want to change this to meet the following requirements:
 -Size the subnet accordingly
 -Use a subnet that doesn't overlap with your environment.
-This is configured in an environment variable that gets propagated to /etc/calico/ippool.json - if you need to change it, change it in the original env variable, or change it directly in the file prior to setting up the ip pool.
+This is configured in an environment variable that gets propagated to /etc/calico/ippool-caliconame.json - if you need to change it, change it in the original env variable, or change it directly in the file prior to setting up the ip pool.
 
 ## Process
 

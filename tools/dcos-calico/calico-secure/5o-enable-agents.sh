@@ -1,4 +1,4 @@
-source env.export
+source 1a-env.export.sh
 
 
 ####### etcd
@@ -61,21 +61,19 @@ sudo mkdir -p /etc/systemd/system/dcos-mesos-slave.service.d
 # We use a systemd override to copy the conf from custom location into default MESOS_NETWORK_CNI_CONFIG_DIR
 sudo tee /etc/systemd/system/dcos-mesos-slave.service.d/dcos-calico-conf-override.conf <<-'EOF'
 [Service]
-ExecStartPre=/bin/cp CALICO_CNI_CONF_DIR/CALICO_CNI_CONF_FILE /opt/mesosphere/etc/dcos/network/cni/
+ExecStartPre=/bin/sh -c '/bin/rm -Rf /opt/mesosphere/etc/dcos/network/cni/dcos.*.conf && /bin/cp CALICO_CNI_CONF_DIR/dcos.*.conf /opt/mesosphere/etc/dcos/network/cni/'
 EOF
 
 sudo sed -i "s|CALICO_CNI_CONF_DIR|${CALICO_CNI_CONF_DIR}|g" /etc/systemd/system/dcos-mesos-slave.service.d/dcos-calico-conf-override.conf
-sudo sed -i "s|CALICO_CNI_CONF_FILE|${CALICO_CNI_CONF_FILE}|g" /etc/systemd/system/dcos-mesos-slave.service.d/dcos-calico-conf-override.conf
 
 sudo mkdir -p /etc/systemd/system/dcos-mesos-slave-public.service.d
 # /etc/systemd/system/dcos-mesos-slave.service.d/override.conf
 sudo tee /etc/systemd/system/dcos-mesos-slave-public.service.d/dcos-calico-conf-override.conf <<-'EOF'
 [Service]
-ExecStartPre=/bin/cp CALICO_CNI_CONF_DIR/CALICO_CNI_CONF_FILE /opt/mesosphere/etc/dcos/network/cni/
+ExecStartPre=/bin/sh -c '/bin/rm -Rf /opt/mesosphere/etc/dcos/network/cni/dcos.*.conf && /bin/cp CALICO_CNI_CONF_DIR/dcos.*.conf /opt/mesosphere/etc/dcos/network/cni/'
 EOF
 
 sudo sed -i "s|CALICO_CNI_CONF_DIR|${CALICO_CNI_CONF_DIR}|g" /etc/systemd/system/dcos-mesos-slave-public.service.d/dcos-calico-conf-override.conf
-sudo sed -i "s|CALICO_CNI_CONF_FILE|${CALICO_CNI_CONF_FILE}|g" /etc/systemd/system/dcos-mesos-slave-public.service.d/dcos-calico-conf-override.conf
 
 ## Restart
 sudo systemctl daemon-reload

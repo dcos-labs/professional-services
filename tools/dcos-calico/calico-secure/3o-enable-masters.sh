@@ -1,4 +1,4 @@
-source env.export
+source 1a-env.export.sh
 # Unused, but specified for consistency
 
 ####### etcd
@@ -39,5 +39,8 @@ sudo systemctl enable dcos-calico-node.timer
 sudo systemctl restart dcos-calico-node.timer
 
 # Check status
-sleep 5
-sudo calicoctl node status
+until sudo calicoctl node status &> /dev/null
+do
+    echo "Waiting for calico node status..."
+    sleep 1
+done

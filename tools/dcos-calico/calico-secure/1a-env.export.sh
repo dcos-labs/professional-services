@@ -1,18 +1,15 @@
-tee env.export <<-'EOF'
 # This will be customer-specific, so it's at the top
 # This export file is used to generate env files for all systemd units
 
-export CALICO_CIDR=192.168.0.0/16
-export CALICO_NAME=calico
-export CALICO_CNI_CONF_FILE=dcos.calico.conf
+# Default config
+CALICO_NAME=( 'calico' )
+CALICO_CIDR=( '192.168.0.0/16' )
 
-# export CALICO_CIDR=10.0.0.0/16
-# export CALICO_NAME=calico-green
-# export CALICO_CNI_CONF_FILE=dcos.calico-green.conf
+# Example config with multiple networks
+# export CALICO_NAME=( 'calico-mercury' 'calico-venus' )
+# export CALICO_CIDR=( '10.1.0.0/16' '10.2.0.0/16')
 
-# export CALICO_CIDR=10.1.0.0/16
-# export CALICO_NAME=calico-brown
-# export CALICO_CNI_CONF_FILE=dcos.calico-brown.conf
+########
 
 # 2379 and 2380 are within the DC/OS service port range, and are used by the etcd included with Calico.
 export ETCD_LISTEN_PORT=62379
@@ -42,5 +39,3 @@ export DOCKER_CLUSTER_CERTS_DIR=/etc/docker/cluster/certs
 export CALICO_NODE_CERTS_DIR=/etc/calico/certs/node
 export CALICO_CALICOCTL_CERTS_DIR=/etc/calico/certs/calicoctl
 export CALICO_CNI_CERTS_DIR=/etc/calico/certs/cni
-
-EOF

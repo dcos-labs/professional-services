@@ -1,4 +1,4 @@
-source env.export
+source 1a-env.export.sh
 
 
 ## Scriptlet used to generate certs using DC/OS CA
